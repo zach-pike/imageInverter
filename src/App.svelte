@@ -12,6 +12,8 @@
 		Image
 	} from "sveltestrap"
 
+	let serverUrl = "https://ce07e97e6783.ngrok.io"
+
 	let files;
 	let imageSrc = ""
 	let imageFilename = ""
@@ -21,14 +23,14 @@
 
 		formdata.append("img", files[0], files[0].name)
 
-		let data = await fetch("http://localhost:3000/invert", {
+		let data = await fetch(`${serverUrl}/invert`, {
 			method: "POST",
 			body: formdata,
 			redirect: "follow"
 		})
 		
 		imageFilename = await data.text()
-		imageSrc = `http://localhost:3000/images/${imageFilename}`
+		imageSrc = `${serverUrl}/images/${imageFilename}`
 	}
 </script>
 
@@ -43,6 +45,6 @@
 	<br />
 
 	{#if !!imageFilename}
-		<Button on:click={() => window.location.replace(`http://localhost:3000/download/${imageFilename}`)}>Download</Button>
+		<Button on:click={() => window.location.replace(`${serverUrl}/download/${imageFilename}`)}>Download</Button>
 	{/if}
 </Container>
