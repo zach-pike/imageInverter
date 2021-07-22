@@ -38,13 +38,13 @@
 	<h1>Image color inverter</h1>
 	<Input type="file" bind:files />
 
-	<Button on:click={Go} class="m-2">Invert</Button>
+	<Button on:click={Go} class="mt-2 mb-2">Invert</Button>
 	<br />
 	<Image bind:src="{imageSrc}" width="800" />
 
 	<br />
 
 	{#if !!imageFilename}
-		<Button on:click={() => window.location.replace(`${serverUrl}/download/${imageFilename}`)}>Download</Button>
+		<Button class="mt-2" on:click={() => window.location.replace(`${serverUrl}/download/${imageFilename}`)}>Download</Button>
 	{/if}
 </Container>
