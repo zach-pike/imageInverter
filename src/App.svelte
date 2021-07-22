@@ -14,9 +14,14 @@
 
 	let serverUrl = "https://ce07e97e6783.ngrok.io"
 
+	let previewImageSrc;
 	let files;
 	let imageSrc = ""
 	let imageFilename = ""
+
+	$: {
+		if (typeof files != "undefined") previewImageSrc = URL.createObjectURL(files[0]);
+	}
 
 	async function Go() {
 		let formdata = new FormData()
@@ -36,13 +41,13 @@
 
 <Container>
 	<h1>Image color inverter</h1>
-	<Input type="file" bind:files />
+	<Input type="file" bind:files accept="image/*"/>
+
+	<Image bind:src={previewImageSrc} width="250" class="mt-2 mb-2" />
 
 	<Button on:click={Go} class="mt-2 mb-2">Invert</Button>
 	<br />
-	<Image bind:src="{imageSrc}" width="800" />
-
-	<br />
+	<Image bind:src="{imageSrc}" width="250" />
 
 	{#if !!imageFilename}
 		<Button class="mt-2" on:click={() => window.location.replace(`${serverUrl}/download/${imageFilename}`)}>Download</Button>
