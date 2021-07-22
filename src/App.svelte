@@ -1,0 +1,48 @@
+<svelte:head>
+  	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
+</svelte:head>
+
+<svelte:options accessors/>
+
+<script>
+	import {
+		Button,
+		Container,
+		Input,
+		Image
+	} from "sveltestrap"
+
+	let files;
+	let imageSrc = ""
+	let imageFilename = ""
+
+	async function Go() {
+		let formdata = new FormData()
+
+		formdata.append("img", files[0], files[0].name)
+
+		let data = await fetch("http://localhost:3000/invert", {
+			method: "POST",
+			body: formdata,
+			redirect: "follow"
+		})
+		
+		imageFilename = await data.text()
+		imageSrc = `http://localhost:3000/images/${imageFilename}`
+	}
+</script>
+
+<Container>
+	<h1>Image color inverter</h1>
+	<Input type="file" bind:files />
+
+	<Button on:click={Go} class="m-2">Invert</Button>
+	<br />
+	<Image bind:src="{imageSrc}" width="800" />
+
+	<br />
+
+	{#if !!imageFilename}
+		<Button on:click={() => window.location.replace(`http://localhost:3000/download/${imageFilename}`)}>Download</Button>
+	{/if}
+</Container>
